@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>56God Scouting App - Scout Premium</title>
+    
+    <!-- STYLING: Just to make it look clean -->
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; margin: 0; }
+        .checkout-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 350px; width: 100%; }
+        h2 { color: #333; margin-bottom: 10px; }
+        p { color: #666; font-size: 14px; margin-bottom: 20px; }
+        .price { font-size: 24px; font-weight: bold; color: #2ecc71; margin-bottom: 25px; }
+        .pay-btn { background-color: #2ecc71; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: background 0.2s; }
+        .pay-btn:hover { background-color: #27ae60; }
+    </style>
+
+    <!-- 1. IMPORT THE FLUTTERWAVE INLINE LIBRARY -->
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+</head>
+<body>
+
+    <div class="checkout-card">
+        <h2>Scout Premium Plan</h2>
+        <p>Unlock direct WhatsApp contact details and full match highlights for top young African talent.</p>
+        <div class="price">N$ 250 / month</div>
+        
+        <!-- The button the Scout clicks -->
+        <button type="button" class="pay-btn" onclick="makePayment()">Upgrade to Premium</button>
+    </div>
+
+    <!-- 2. THE PAYMENT SCRIPT -->
+    <script>
+        function makePayment() {
+            FlutterwaveCheckout({
+                // Replace this with your actual Test Public Key from Flutterwave Dashboard later
+                public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X", 
+                tx_ref: "56god-" + Math.floor(Math.random() * 1000000000 + 1), // Generates a random, unique ID for this payment
+                amount: 250,
+                currency: "ZAR", // Note: ZAR (South African Rand) exchanges 1:1 with NAD and is widely accepted on payment integrations.
+                payment_options: "card, mobilemoney",
+                customer: {
+                    email: "test-scout@example.com", // In production, pass the logged-in scout's actual email dynamically
+                    name: "Alex International Scout",
+                },
+                customizations: {
+                    title: "56God Scouting App",
+                    description: "Premium Scout Tier Access",
+                    logo: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=150", // Put your app logo link here
+                },
+                callback: function (data) {
+                    // This triggers automatically the second the payment completes successfully!
+                    console.log("Payment successful data:", data);
+                    alert("Payment Successful! Reference: " + data.tx_ref);
+                    
+                    // TODO: Right here, add the code that saves the success state to your database 
+                    // e.g., update user profile to 'isPremium = true'
+                },
+                onclose: function() {
+                    // Triggers if the scout closes the payment window without paying
+                    alert("Payment cancelled. The scout didn't complete the transaction.");
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

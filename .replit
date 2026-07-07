@@ -1,0 +1,36 @@
+modules = ["nodejs-24", "postgresql-16"]
+
+[[artifacts]]
+id = "artifacts/api-server"
+
+[[artifacts]]
+id = "artifacts/mockup-sandbox"
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+VAPID_PUBLIC_KEY = "BBUu5K5-bLRonuQekWkOR8Mk9l7bBsRUIpFOOkTJeIB6GzFyJKeDlWkb2HjCf-NPrhyhAw7bjlh_mw7uwTW9mNI"
+VAPID_PRIVATE_KEY = "KunpJz3Cad5PPZFro3LwK4fclszCB6oNvyoXsnfLzvc"
+VAPID_EMAIL = "mailto:push@afriscout.com"
