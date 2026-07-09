@@ -8,3 +8,6 @@ catalog:
   'drizzle-orm': '^0.30.0'
   'drizzle-kit': '^0.20.0'
   'zod': '^3.23.0'
+
+# This block allows esbuild to compile your TypeScript successfully
+ignoredBuilds: []
