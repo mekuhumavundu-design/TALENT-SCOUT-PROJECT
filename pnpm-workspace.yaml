@@ -10,4 +10,4 @@ catalog:
   'zod': '^3.23.0'
 
 allowBuilds:
-  esbuild: true
+  esbuild: true 
