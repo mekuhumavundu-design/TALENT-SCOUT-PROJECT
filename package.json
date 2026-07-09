@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r --if-present run build",
-    "start": "pnpm --filter lib run start"
+    "start": "pnpm --prefix lib start"
   },
   "devDependencies": {
     "typescript": "~5.9.2",
