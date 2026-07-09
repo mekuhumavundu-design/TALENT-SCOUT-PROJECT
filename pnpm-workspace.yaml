@@ -1,2 +1,5 @@
 packages:
   - 'lib/*'
+
+catalog:
+  '@tanstack/react-query': '^5.0.0'
