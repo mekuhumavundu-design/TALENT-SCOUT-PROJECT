@@ -3,3 +3,4 @@ packages:
 
 catalog:
   '@tanstack/react-query': '^5.0.0'
+  '@types/node': '^22.0.0'
