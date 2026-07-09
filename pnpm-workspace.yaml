@@ -4,6 +4,7 @@ packages:
 catalog:
   '@tanstack/react-query': '^5.0.0'
   '@types/node': '^22.0.0'
+  '@types/react': '^18.0.0'
   'drizzle-orm': '^0.30.0'
   'drizzle-kit': '^0.20.0'
   'zod': '^3.23.0'
