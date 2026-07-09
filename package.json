@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r --if-present run build",
-    "start": "node lib/dist/index.js"
+    "start": "pnpm --filter=lib start"
   },
   "devDependencies": {
     "typescript": "~5.9.2",
