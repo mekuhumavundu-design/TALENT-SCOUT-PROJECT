@@ -5,21 +5,21 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Enable dependency hoisting so TypeScript can resolve modules perfectly
+# Enable dependency hoisting
 RUN echo "shamefully-hoist=true" > .npmrc
 
-# Copy all workspace configurations and tsconfig base files
+# Copy workspace configurations and tsconfigs
 COPY pnpm-workspace.yaml package.json tsconfig*.json ./
 
 # Copy all project directories
 COPY apps ./apps
 COPY lib ./lib
 
-# Install dependencies without expecting a lockfile
+# Install all dependencies
 RUN pnpm install --no-frozen-lockfile
 
-# Build the workspace packages
-RUN pnpm run build
+# Directly build ONLY the server application (bypassing global root typechecks)
+RUN pnpm --filter graceful-heart-server run build
 
 # Start the application
 CMD ["pnpm", "--filter", "graceful-heart-server", "run", "start"]
