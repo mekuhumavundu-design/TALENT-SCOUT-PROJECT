@@ -16,5 +16,5 @@ COPY lib ./lib
 # Install all dependencies across the monorepo
 RUN pnpm install --no-frozen-lockfile
 
-# Run the root index.ts directly using tsx
-CMD ["tsx", "apps/server/index.js"]
+# Run the root TypeScript file directly using tsx
+CMD ["tsx", "apps/server/index.ts"]
