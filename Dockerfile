@@ -5,6 +5,9 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
+# Enable dependency hoisting so TypeScript can resolve modules perfectly
+RUN echo "shamefully-hoist=true" > .npmrc
+
 # Copy all workspace configurations and tsconfig base files
 COPY pnpm-workspace.yaml package.json tsconfig*.json ./
 
