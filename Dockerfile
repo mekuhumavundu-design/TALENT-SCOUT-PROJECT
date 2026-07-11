@@ -1,7 +1,7 @@
 FROM node:22-alpine
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Install pnpm and tsx globally
+RUN npm install -g pnpm tsx
 
 WORKDIR /app
 
@@ -16,8 +16,5 @@ COPY lib ./lib
 # Install all dependencies across the monorepo
 RUN pnpm install --no-frozen-lockfile
 
-# Compile the server package and its internal dependencies
-RUN pnpm --filter graceful-heart-server... run build
-
-# Start the application using your workspace's native start script
-CMD ["pnpm", "--filter", "graceful-heart-server", "run", "start"]
+# Start the application using tsx to run the TypeScript entry point directly
+CMD ["tsx", "apps/server/index.ts"]
