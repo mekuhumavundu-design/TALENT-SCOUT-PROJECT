@@ -16,5 +16,5 @@ COPY lib ./lib
 # Install all dependencies across the monorepo
 RUN pnpm install --no-frozen-lockfile
 
-# Start the application using tsx to run the TypeScript entry point directly
-CMD ["tsx", "apps/server/index.ts"]
+# Start the application using tsx targeting the nested src directory
+CMD ["tsx", "apps/server/src/index.ts"]
