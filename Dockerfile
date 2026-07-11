@@ -1,14 +1,14 @@
 FROM node:22-alpine
 
-# Install pnpm and tsx globally
-RUN npm install -g pnpm tsx
+# Install pnpm globally
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Enable dependency hoisting so modules are fully visible
+# Enable dependency hoisting so nested workspace packages can see each other
 RUN echo "shamefully-hoist=true" > .npmrc
 
-# Copy all workspace files
+# Copy all workspace configurations and files
 COPY pnpm-workspace.yaml package.json tsconfig*.json ./
 COPY apps ./apps
 COPY lib ./lib
@@ -16,5 +16,5 @@ COPY lib ./lib
 # Install all dependencies across the monorepo
 RUN pnpm install --no-frozen-lockfile
 
-# Run the root TypeScript file directly using tsx
-CMD ["tsx", "apps/server/index.ts"]
+# Start the application using your workspace's native start script
+CMD ["pnpm", "--filter", "graceful-heart-server", "run", "start"]
