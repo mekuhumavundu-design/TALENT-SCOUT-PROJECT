@@ -13,7 +13,7 @@ COPY apps ./apps
 COPY lib ./lib
 
 # Install dependencies and build the packages
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 RUN pnpm run build
 
 # Start the application
