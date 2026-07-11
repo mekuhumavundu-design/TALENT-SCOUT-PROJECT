@@ -5,19 +5,22 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Enable dependency hoisting so TypeScript can see nested modules safely
-RUN echo "shamefully-hoist=true" > .npmrc
-
 # Copy all workspace configurations and files
 COPY pnpm-workspace.yaml package.json tsconfig*.json ./
 COPY apps ./apps
 COPY lib ./lib
 
-# Install all dependencies
+# Install all dependencies across the monorepo
 RUN pnpm install --no-frozen-lockfile
 
-# Build ONLY the server and its local workspace dependencies (skips global root typecheck)
-RUN pnpm --filter graceful-heart-server... run build
+# Prune and deploy the server into an isolated, standalone production folder
+RUN pnpm --filter graceful-heart-server deploy /app/deployed-server
 
-# Start the application
-CMD ["pnpm", "--filter", "graceful-heart-server", "run", "start"]
+# Move our working environment into the deployed server folder
+WORKDIR /app/deployed-server
+
+# Compile the TypeScript files inside the isolated production bundle
+RUN pnpm run build
+
+# Start the application directly using standard Node from the build folder
+CMD ["node", "dist/index.js"]
