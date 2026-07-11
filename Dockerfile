@@ -1,14 +1,14 @@
 FROM node:22-alpine
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Install pnpm and ts-node globally
+RUN npm install -g pnpm ts-node
 
 WORKDIR /app
 
-# Enable dependency hoisting so sub-packages can see everything seamlessly
+# Enable dependency hoisting so TypeScript can see everything cleanly
 RUN echo "shamefully-hoist=true" > .npmrc
 
-# Copy all configurations and files in their exact original structure
+# Copy all workspace configurations and files
 COPY pnpm-workspace.yaml package.json tsconfig*.json ./
 COPY apps ./apps
 COPY lib ./lib
@@ -16,8 +16,6 @@ COPY lib ./lib
 # Install all dependencies across the entire monorepo
 RUN pnpm install --no-frozen-lockfile
 
-# Compile the server and its exact internal dependencies from the root context
-RUN pnpm --filter graceful-heart-server... run build
-
-# Start the server directly from its compiled location in the workspace
-CMD ["node", "apps/server/dist/index.js"]
+# Start the application using ts-node directly from the source entry point
+# (Assuming your entry file is src/index.ts — change to apps/server/index.ts if it lives in the root of the server folder)
+CMD ["ts-node", "apps/server/src/index.ts"]
