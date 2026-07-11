@@ -5,8 +5,8 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Copy workspace configurations AND the root tsconfig.json
-COPY pnpm-workspace.yaml package.json tsconfig.json ./
+# Copy all workspace configurations and tsconfig base files
+COPY pnpm-workspace.yaml package.json tsconfig*.json ./
 
 # Copy all project directories
 COPY apps ./apps
