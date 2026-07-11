@@ -5,21 +5,22 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Enable dependency hoisting
-RUN echo "shamefully-hoist=true" > .npmrc
-
-# Copy workspace configurations and tsconfigs
+# Copy all workspace configurations and files
 COPY pnpm-workspace.yaml package.json tsconfig*.json ./
-
-# Copy all project directories
 COPY apps ./apps
 COPY lib ./lib
 
 # Install all dependencies
 RUN pnpm install --no-frozen-lockfile
 
-# Directly build ONLY the server application (bypassing global root typechecks)
-RUN pnpm --filter graceful-heart-server run build
+# Compile the entire monorepo so all builds are generated
+RUN pnpm run build
 
-# Start the application
-CMD ["pnpm", "--filter", "graceful-heart-server", "run", "start"]
+# Use pnpm's deploy mechanism to isolate the server for production
+RUN pnpm --filter graceful-heart-server deploy /app/deployed-server
+
+# Move context over to our standalone deployed server folder
+WORKDIR /app/deployed-server
+
+# Start the application directly from the isolated environment
+CMD ["node", "dist/index.js"]
