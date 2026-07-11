@@ -5,15 +5,17 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Copy workspace configurations
-COPY pnpm-workspace.yaml package.json ./
+# Copy workspace configurations AND the root tsconfig.json
+COPY pnpm-workspace.yaml package.json tsconfig.json ./
 
 # Copy all project directories
 COPY apps ./apps
 COPY lib ./lib
 
-# Install dependencies and build the packages
+# Install dependencies without expecting a lockfile
 RUN pnpm install --no-frozen-lockfile
+
+# Build the workspace packages
 RUN pnpm run build
 
 # Start the application
