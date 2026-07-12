@@ -5,7 +5,7 @@
     "buildCommand": "pnpm install && pnpm --filter graceful-heart-server build"
   },
   "deploy": {
-    "startCommand": "node apps/server/dist/index.js",
+    "startCommand": "node $(find . -name index.js | grep dist | head -n 1)",
     "restartPolicyType": "ON_FAILURE"
   }
 }
