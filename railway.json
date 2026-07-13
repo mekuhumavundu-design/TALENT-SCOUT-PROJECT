@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "sh -c 'npx tsx $(find apps/server -name \"*.ts\" | grep -v \"node_modules\" | grep -E \"index|server|main|app\" | head -n 1)'",
+    "startCommand": "sh -c 'PORT=5000 HOST=0.0.0.0 npx tsx $(find apps/server -name \"*.ts\" | grep -v \"node_modules\" | grep -E \"index|server|main|app\" | head -n 1)'",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
